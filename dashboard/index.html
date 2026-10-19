@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>Claude 云端监控</title><link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+  <main>
+    <header class="topbar">
+      <div class="brand"><span class="brandmark" aria-hidden="true">✳</span><div><div class="brand-name">Claude <span>云端监控</span></div><div class="eyebrow">CLOUD OVERVIEW</div></div></div>
+      <div class="toolbar"><span id="connection" class="pill neutral"><i></i>等待连接</span><button id="pause" class="quiet" aria-pressed="false">暂停刷新</button><button id="refresh" class="primary"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 7v5h-5M4 17v-5h5M6 7a7 7 0 0 1 12-1l2 6M4 12l2 6a7 7 0 0 0 12-1"/></svg><span>刷新</span></button></div>
+    </header>
+    <section class="intro"><div><p class="eyebrow">YOUR CLOUD, AT A GLANCE</p><h1>云端概览<span class="title-dot">.</span></h1><p class="subtitle">账号、额度与服务器状态，一目了然。</p></div><div class="clock-block"><span id="date">—</span><strong id="clock">—</strong><small>北京时间</small></div></section>
+    <div id="notice" class="notice" role="status" hidden></div>
+    <section class="summary" aria-label="账号概况">
+      <div class="summary-item"><span class="label">已登记账号</span><div><strong id="account-count">—</strong><span>个账号</span></div></div>
+      <div class="summary-item"><span class="label">已确认套餐</span><div><strong id="plans" class="plan-summary">—</strong></div></div>
+      <div class="summary-item"><span class="label">额度需关注</span><div><strong id="attention">—</strong><span id="attention-label">个账号</span></div></div>
+      <div class="summary-item"><span class="label">额度最近查询</span><div><strong id="quota-time" class="time-value">—</strong><span id="quota-age">等待首次读取</span></div></div>
+    </section>
+    <section class="accounts-section" aria-labelledby="accounts-title">
+      <div class="section-heading"><div><span class="section-number">01</span><h2 id="accounts-title">账号与额度</h2><span class="section-meta">剩余比例</span></div><span id="quota-status" class="refresh-note">每 60 秒更新</span></div>
+      <div id="accounts" class="accounts-grid"><div class="empty-state"><span class="loader"></span><h3>正在连接账号池</h3><p>首次连接需要几秒钟，账号与套餐将在这里显示。</p></div></div>
+      <p class="footnote">额度按账号统计 · 各窗口独立计算 · 重置时间以最新查询为准</p>
+    </section>
+    <section aria-labelledby="server-title">
+      <div class="section-heading"><div><span class="section-number">02</span><h2 id="server-title">服务器性能</h2></div><span id="server-address" class="refresh-note">等待服务器</span></div>
+      <div class="server-panel">
+        <div class="server-header"><div><span id="server-dot" class="status-dot neutral"></span><strong>运行状态</strong><span id="server-state">正在连接</span></div><span id="uptime">—</span></div>
+        <div class="metrics">
+          <article class="metric" id="cpu"><div class="metric-heading"><span>CPU</span><span class="metric-hint" id="cpu-cores">处理器</span></div><div class="metric-value"><strong>—</strong><span>%</span></div><div class="meter"><span></span></div><div class="metric-detail">等待采样</div><svg class="spark" viewBox="0 0 240 36" preserveAspectRatio="none" aria-hidden="true"><path/></svg></article>
+          <article class="metric" id="memory"><div class="metric-heading"><span>内存</span><span class="metric-hint">已使用</span></div><div class="metric-value"><strong>—</strong><span>%</span></div><div class="meter"><span></span></div><div class="metric-detail">等待采样</div><svg class="spark" viewBox="0 0 240 36" preserveAspectRatio="none" aria-hidden="true"><path/></svg></article>
+          <article class="metric" id="disk"><div class="metric-heading"><span>磁盘</span><span class="metric-hint">根分区</span></div><div class="metric-value"><strong>—</strong><span>%</span></div><div class="meter"><span></span></div><div class="metric-detail">等待采样</div><div id="disk-free" class="metric-extra">等待采样</div></article>
+          <article class="metric" id="network"><div class="metric-heading"><span>网络</span><span class="metric-hint">实时速率</span></div><div class="network-row"><span>↓ 接收</span><strong id="network-rx">—</strong></div><div class="network-row"><span>↑ 发送</span><strong id="network-tx">—</strong></div><div class="metric-detail">所有非回环网卡合计</div></article>
+        </div>
+        <div class="server-footer"><span id="load">系统负载 —</span><span id="swap">交换空间 —</span><span id="perf-time">每 10 秒采样</span></div>
+      </div>
+    </section>
+    <footer><span><i class="small-dot"></i><span id="refresh-mode">自动刷新已开启</span></span><span>CLAUDE / CLOUD MONITOR <b>02</b></span></footer>
+  </main>
+  <template id="account-template"><article class="account-card">
+    <div class="account-header"><div class="account-identity"><span class="avatar"></span><div><h3></h3><div class="account-email"></div></div></div><span class="plan-badge"></span></div>
+    <div class="account-flags"><span class="account-state"></span><span class="default-badge" hidden>默认账号</span></div>
+    <div class="quota-list"></div><div class="account-footer"><span class="sample-time"></span><span class="pool-state"></span></div>
+  </article></template>
+  <script src="dashboard.js"></script>
+</body>
+</html>
