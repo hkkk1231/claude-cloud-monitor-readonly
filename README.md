@@ -2,6 +2,16 @@
 
 查看自己的 Linux 服务器性能、Claude 账号套餐及剩余额度。界面为中文，时间按北京时间显示。此工具由独立开发者制作，非 Anthropic 官方客户端。
 
+## 前置依赖：先安装 claude-swap（cswap）
+
+账号套餐和额度监控依赖 **[claude-swap 账号切换工具](https://github.com/realiti4/claude-swap)**。请先在要监控的 **Linux 服务器上，以监控连接使用的同一个 SSH 用户** 完成配置，再使用本监控。
+
+1. 按 [claude-swap 项目说明](https://github.com/realiti4/claude-swap#installation)安装工具；已安装 uv 时可运行 `uv tool install claude-swap`。
+2. 在该服务器用户下安装并完成 Claude Code 官方登录，按上游说明用 `cswap add` 登记自己的账号。
+3. 确认服务器上的 `~/.local/bin/cswap` 可执行，`~/.local/bin/cswap list --json` 返回 `schemaVersion: 1` 和已登记账号，并支持 `cswap run <账号编号> -- auth status` 查询账号状态。
+
+claude-swap 负责账号管理，本监控只读取其账号、套餐和额度数据；使用监控无需启用自动切号。本机 Windows 无需安装 Claude Code 或 claude-swap。本项目不会自动安装这些服务器依赖；缺少兼容 cswap 时只能查看服务器性能，账号区域显示不可用。
+
 ## 首次使用
 
 1. 把整个 ZIP 解压到自己有写入权限的文件夹，不要在压缩包内直接运行。
@@ -14,7 +24,7 @@
 
 - Windows 10 1809 或更新版本、64 位系统、.NET Framework 4.8、Microsoft Edge WebView2 Runtime、Windows OpenSSH Client。缺少组件时使用 Windows 可选功能或 Microsoft 官方安装渠道；包内包含 WebView2 SDK 的运行依赖 DLL，不包含 WebView2 Runtime 安装器。
 - 自己拥有访问权限的 Linux 服务器，SSH 密钥认证及 Python 3.8+ 可用，不需要 root 或 sudo。性能统计通过 `/proc` 与根分区读取。
-- 账号额度依赖服务器用户目录 `~/.local/bin/cswap`，需要支持 `cswap list --json` 的 schemaVersion 1，以及 `cswap run <编号> -- auth status`。服务器应已安装 Claude Code 并以该用户完成账号登记和官方登录。参考 claude-swap 项目：<https://github.com/realiti4/claude-swap>。本包不分发或自动安装 claude-swap、Claude CLI，也不提供账号或登录缓存。
+- 账号套餐和额度需要完成上方「前置依赖」中的 claude-swap 配置。本包不分发或自动安装 claude-swap、Claude CLI，也不提供账号或登录缓存。
 - 没有兼容账号池时，服务器性能仍可显示，账号区域显示不可用；不会虚构额度。
 
 ## 数据与操作边界
